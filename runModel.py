@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # model modules
-from speedModel import SM
+from models.speedModel import SM
 
 import sys
 import pickle
