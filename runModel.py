@@ -2,6 +2,7 @@
 
 # model modules
 from models.speedModel import SM
+from models.test import Test
 
 import sys
 import pickle
@@ -23,6 +24,9 @@ def run_model(model_id, model_input_file_path, output_file_name):
         output_dict = SM(input_dict)
     elif model_id == "T":
         output_dict = SM(input_dict)
+    elif model_id == "Test":
+        # for testing purpose
+        output_dict = Test(input_dict)
     
     pickle_file = open(output_file_name, "wb")
     pickle.dump(output_dict, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
