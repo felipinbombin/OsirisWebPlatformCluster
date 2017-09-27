@@ -2,6 +2,7 @@
 
 # model modules
 from models.speedModel import SM
+from models.SMinit import SMinit
 from models.test import Test
 
 import sys
@@ -17,7 +18,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
     output_dict = None
 
     if model_id == "S":
-        output_dict = SM(input_dict)
+        output_dict = SMinit(input_dict)
     elif model_id == "F":
         output_dict = SM(input_dict)
     elif model_id == "E":
@@ -29,7 +30,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
         output_dict = Test(input_dict)
     
     pickle_file = open(output_file_name, "wb")
-    pickle.dump(output_dict, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
+    pickle.dump(output_dict, pickle_file, protocol=2)
     pickle_file.flush()
     pickle_file.close()
 
