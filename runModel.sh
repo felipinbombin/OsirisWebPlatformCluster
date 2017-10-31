@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=speed
+#SBATCH --job-name=osiris
 #SBATCH --partition=slims
 #SBATCH -n 1
 #SBATCH --output=osiris/logs/archivo_%j.out

@@ -23,9 +23,13 @@ def run_model(model_id, model_input_file_path, output_file_name):
     output_dict = None
 
     if model_id == "S":
-        output_dict = SMinit(model_input)
+        output_dict = {
+            "SM": SMinit(model_input)
+        }
     elif model_id == "F":
-        output_dict = FM(model_input, model_output)
+        output_dict = {
+            "FM": FM(model_input, model_output)
+        }
     elif model_id == "E":
         output_dict = EM_main(model_input, model_output)
     elif model_id == "T":
