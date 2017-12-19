@@ -4,6 +4,7 @@
 from models.SMinit import SMinit
 from models.FM import FM
 from models.EM_main import EM_main
+from models.TM import TM
 from models.test import Test
 
 import sys
@@ -23,24 +24,20 @@ def run_model(model_id, model_input_file_path, output_file_name):
     output_dict = None
 
     if model_id == "S":
-        output_dict = {
-            "SM": SMinit(model_input)
-        }
+        model_output["SM"] = SMinit(model_input)
     elif model_id == "F":
-        output_dict = {
-            "FM": FM(model_input, model_output)
-        }
+        model_output["FM"] = FM(model_input, model_output)
     elif model_id == "E":
-        output_dict = EM_main(model_input, model_output)
+        model_output["EM"] = EM_main(model_input, model_output)
     elif model_id == "T":
-        output_dict = FM(model_input, model_output)
+        model_output["TM"] = TM(model_input, model_output)
     elif model_id == "Test":
         # for testing purpose
         output_dict = Test(input_dict)
     
     output_dict = {
         "input": model_input,
-        "output": output_dict,
+        "output": model_output,
     }
 
     pickle_file = open(output_file_name, "wb")
