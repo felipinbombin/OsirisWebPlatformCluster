@@ -1,11 +1,4 @@
 control==0.7.0
-cycler==0.10.0
-javapackages==4.3.2
 matplotlib==1.5.1
 numpy==1.11.1
-pyparsing==2.1.5
-python-dateutil==2.5.3
-pytz==2017.3
-PyXB==1.2.4
 scipy==0.18.0rc2
-six==1.11.0
