@@ -5,3 +5,4 @@ models/*
 logs/*
 tmp/*
 env/
+tests/outputs/*
