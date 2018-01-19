@@ -2,86 +2,115 @@ from runModel import run_model
 
 import unittest
 import pickle
+import os
 
 
-class TestSpeedModel(unittest.TestCase):
+class BaseTest(unittest.TestCase):
+    """ base to other tests """
+
+    def __init__(self):
+        self.model_id = None
+        self.input_file_path = None
+        self.output_file_path = None
+
+        super(BaseTest, self).__init__()
+
+    def delete_output_file(self):
+        """ delete file """
+        if os.path.exists(self.output_file_path):
+            os.remove(self.output_file_path)
+
+
+class TestSpeedModel(BaseTest):
     """  run speed model """
+
     def setUp(self):
         self.model_id = 'S'
+        self.input_file_path = "tests/speed.model_input"
+        self.output_file_path = "tests/aa.model_output"
 
     def test_run(self):
         """  """
-        input_file_path = "tests/speed.model_input"
-        output_file_path = "tests/aa.model_output"
-        run_model(self.model_id, input_file_path, output_file_path)
+        run_model(self.model_id, self.input_file_path, self.output_file_path)
 
         # check file
-        with open(output_file_path, mode='rb') as data_file:
+        with open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user
             model_input = input_dict["input"]
             # output of previous models
             model_output = input_dict["output"]
 
+        self.delete_output_file()
 
-class TestForceModel(unittest.TestCase):
+
+class TestForceModel(BaseTest):
     """  run force model """
+
     def setUp(self):
         self.model_id = 'F'
+        self.input_file_path = "tests/speed.model_input"
+        self.output_file_path = "tests/speed.model_output"
 
     def test_run(self):
         """  """
-        input_file_path = "tests/speed.model_input"
-        output_file_path = "tests/speed.model_output"
-        run_model(self.model_id, input_file_path, output_file_path)
+        run_model(self.model_id, self.input_file_path, self.output_file_path)
 
         # check file
-        with open(output_file_path, mode='rb') as data_file:
+        with open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user
             model_input = input_dict["input"]
             # output of previous models
             model_output = input_dict["output"]
 
+        self.delete_output_file()
 
-class TestEnergyModel(unittest.TestCase):
+
+class TestEnergyModel(BaseTest):
     """  run energy model """
+
     def setUp(self):
         self.model_id = 'E'
+        self.input_file_path = "tests/energy.model_input"
+        self.output_file_path = "tests/energy.model_output"
 
     def test_run(self):
         """  """
-        input_file_path = "tests/energy.model_input"
-        output_file_path = "tests/energy.model_output"
-        run_model(self.model_id, input_file_path, output_file_path)
+        run_model(self.model_id, self.input_file_path, self.output_file_path)
 
         # check file
-        with open(output_file_path, mode='rb') as data_file:
+        with open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user
             model_input = input_dict["input"]
             # output of previous models
             model_output = input_dict["output"]
 
+        self.delete_output_file()
 
-class TestThermalModel(unittest.TestCase):
+
+class TestThermalModel(BaseTest):
     """  run thermal model """
+
     def setUp(self):
         self.model_id = 'T'
+        self.input_file_path = "tests/heat.model_input"
+        self.output_file_path = "tests/heat.model_output"
 
     def test_run(self):
         """  """
-        input_file_path = "tests/heat.model_input"
-        output_file_path = "tests/heat.model_output"
-        run_model(self.model_id, input_file_path, output_file_path)
+        run_model(self.model_id, self.input_file_path, self.output_file_path)
 
         # check file
-        with open(output_file_path, mode='rb') as data_file:
+        with open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user
             model_input = input_dict["input"]
             # output of previous models
             model_output = input_dict["output"]
+
+        self.delete_output_file()
 
 
 if __name__ == '__main__':
