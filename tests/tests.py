@@ -36,6 +36,26 @@ class CommonTest:
             pass
             # os.remove(self.output_file_path)
 
+    def print_dictionary(self, val, spaces=0):
+        from collections import defaultdict
+        import numpy as np
+        import datetime
+        if isinstance(val, defaultdict) or isinstance(val, dict):
+            for a in val:
+                print("{0}{1}:".format(' ' * spaces, a))
+                self.rec(val[a], spaces + 4)
+        elif isinstance(val, np.ndarray) or isinstance(val, list) or isinstance(val, tuple):
+            for b in val:
+                self.rec(b, spaces + 4)
+        elif not (isinstance(val, int) or
+                  isinstance(val, float) or
+                  isinstance(val, str) or
+                  isinstance(val, datetime.time) or
+                  isinstance(val, datetime.timedelta) or
+                  isinstance(val, np.float64) or
+                  isinstance(val, np.int64) or
+                  isinstance(val, np.int32)):
+            print("{0}{1}:".format(' ' * spaces, type(val)))
 
 class TestSpeedModel(unittest.TestCase, CommonTest):
     """  run speed model """
@@ -111,27 +131,6 @@ class TestThermalModel(unittest.TestCase, CommonTest):
             # output of previous models
             model_output = input_dict["output"]
 
-        #self.rec(model_input)
-        #self.rec(model_output)
+        #self.print_dictionary(model_input)
+        #self.print_dictionary(model_output)
         self.assertIn("lines", model_output["TM"].keys())
-
-    def rec(self, val, spaces=0):
-        from collections import defaultdict
-        import numpy as np
-        import datetime
-        if isinstance(val, defaultdict) or isinstance(val, dict):
-            for a in val:
-                print("{0}{1}:".format(' ' * spaces, a))
-                self.rec(val[a], spaces + 4)
-        elif isinstance(val, np.ndarray) or isinstance(val, list) or isinstance(val, tuple):
-            for b in val:
-                self.rec(b, spaces + 4)
-        elif not (isinstance(val, int) or
-                  isinstance(val, float) or
-                  isinstance(val, str) or
-                  isinstance(val, datetime.time) or
-                  isinstance(val, datetime.timedelta) or
-                  isinstance(val, np.float64) or
-                  isinstance(val, np.int64) or
-                  isinstance(val, np.int32)):
-            print("{0}{1}:".format(' ' * spaces, type(val)))
