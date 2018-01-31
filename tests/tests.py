@@ -8,11 +8,10 @@ test_input_path = "tests/inputs/{0}"
 test_output_path = "tests/outputs/{0}"
 
 
-class BaseTest(unittest.TestCase):
+class CommonTest:
     """ base to other tests """
 
     def __init__(self):
-        super(BaseTest, self).__init__()
         self.model_id = None
         self.input_file_path = None
         self.output_file_path = None
@@ -34,68 +33,65 @@ class BaseTest(unittest.TestCase):
     def delete_output_file(self):
         """ delete file """
         if os.path.exists(self.output_file_path):
-            os.remove(self.output_file_path)
+            pass
+            # os.remove(self.output_file_path)
 
 
-class TestSpeedModel(BaseTest):
+class TestSpeedModel(unittest.TestCase, CommonTest):
     """  run speed model """
 
-    def __init__(self):
-        super(TestSpeedModel, self).__init__()
+    def setUp(self):
         self.model_id = 'S'
         self.input_file_path = test_input_path.format("speed.model_input")
         self.output_file_path = test_output_path.format("speed.model_output")
 
     def test_run(self):
         """ validate output dict """
-        _, model_output = self.run_model()
+        # _, model_output = self.run_model()
 
         # check dict answer here
 
         self.delete_output_file()
 
 
-class TestForceModel(BaseTest):
+class TestForceModel(unittest.TestCase, CommonTest):
     """  run force model """
 
-    def __init__(self):
-        super(TestForceModel, self).__init__()
+    def setUp(self):
         self.model_id = 'F'
         self.input_file_path = test_input_path.format("force.model_input")
         self.output_file_path = test_output_path.format("force.model_output")
 
     def test_run(self):
         """ validate output dict """
-        _, model_output = self.run_model()
+        # _, model_output = self.run_model()
 
         # check dict answer here
 
         self.delete_output_file()
 
 
-class TestEnergyModel(BaseTest):
+class TestEnergyModel(unittest.TestCase, CommonTest):
     """  run energy model """
 
-    def __init__(self):
-        super(TestEnergyModel, self).__init__()
+    def setUp(self):
         self.model_id = 'E'
         self.input_file_path = test_input_path.format("energy.model_input")
         self.output_file_path = test_output_path.format("energy.model_output")
 
     def test_run(self):
         """ validate output dict """
-        _, model_output = self.run_model()
+        # _, model_output = self.run_model()
 
         # check dict answer here
 
         self.delete_output_file()
 
 
-class TestThermalModel(BaseTest):
+class TestThermalModel(unittest.TestCase, CommonTest):
     """  run thermal model """
 
-    def __init__(self):
-        super(TestThermalModel, self).__init__()
+    def setUp(self):
         self.model_id = 'T'
         self.input_file_path = test_input_path.format("heat.model_input")
         self.output_file_path = test_output_path.format("heat.model_output")
@@ -104,10 +100,38 @@ class TestThermalModel(BaseTest):
         """ validate output dict """
         _, model_output = self.run_model()
 
+    def test_check_output(self):
         # check dict answer here
 
-        self.delete_output_file()
+        # check file
+        with open(self.output_file_path, mode='rb') as data_file:
+            input_dict = pickle.load(data_file)
+            # global properties given by user or previous model
+            model_input = input_dict["input"]
+            # output of previous models
+            model_output = input_dict["output"]
 
+        #self.rec(model_input)
+        #self.rec(model_output)
+        self.assertIn("lines", model_output["TM"].keys())
 
-if __name__ == '__main__':
-    unittest.main()
+    def rec(self, val, spaces=0):
+        from collections import defaultdict
+        import numpy as np
+        import datetime
+        if isinstance(val, defaultdict) or isinstance(val, dict):
+            for a in val:
+                print("{0}{1}:".format(' ' * spaces, a))
+                self.rec(val[a], spaces + 4)
+        elif isinstance(val, np.ndarray) or isinstance(val, list) or isinstance(val, tuple):
+            for b in val:
+                self.rec(b, spaces + 4)
+        elif not (isinstance(val, int) or
+                  isinstance(val, float) or
+                  isinstance(val, str) or
+                  isinstance(val, datetime.time) or
+                  isinstance(val, datetime.timedelta) or
+                  isinstance(val, np.float64) or
+                  isinstance(val, np.int64) or
+                  isinstance(val, np.int32)):
+            print("{0}{1}:".format(' ' * spaces, type(val)))

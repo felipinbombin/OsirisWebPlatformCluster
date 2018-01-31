@@ -33,7 +33,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
         model_output["TM"] = TM(model_input, model_output)
     elif model_id == "Test":
         # for testing purpose
-        output_dict = Test(input_dict)
+        model_output = Test(input_dict)
     
     output_dict = {
         "input": model_input,
