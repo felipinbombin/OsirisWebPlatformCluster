@@ -6,3 +6,5 @@ logs/*
 tmp/*
 env/
 tests/outputs/*
+
+.idea/*

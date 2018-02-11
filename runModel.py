@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 # model modules
 from models.SMinit import SMinit
@@ -14,15 +15,13 @@ import gzip
 
 def run_model(model_id, model_input_file_path, output_file_name):
     """ choose model and execute """
-    
+
     with gzip.open(model_input_file_path, mode='rb') as data_file:
         input_dict = pickle.load(data_file)
         # global properties given by user
         model_input = input_dict["input"]
         # output of previous models
         model_output = input_dict["output"]
-
-    output_dict = None
 
     if model_id == "S":
         model_output["SM"] = SMinit(model_input)
@@ -35,7 +34,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
     elif model_id == "Test":
         # for testing purpose
         model_output = Test(input_dict)
-    
+
     output_dict = {
         "input": model_input,
         "output": model_output,
@@ -50,4 +49,3 @@ def run_model(model_id, model_input_file_path, output_file_name):
 if __name__ == "__main__":
     """ run model """
     run_model(sys.argv[1], sys.argv[2], sys.argv[3])
-
