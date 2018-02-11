@@ -9,12 +9,13 @@ from models.test import Test
 
 import sys
 import pickle
+import gzip
 
 
 def run_model(model_id, model_input_file_path, output_file_name):
     """ choose model and execute """
     
-    with open(model_input_file_path, mode='rb') as data_file:
+    with gzip.open(model_input_file_path, mode='rb') as data_file:
         input_dict = pickle.load(data_file)
         # global properties given by user
         model_input = input_dict["input"]
@@ -40,7 +41,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
         "output": model_output,
     }
 
-    pickle_file = open(output_file_name, "wb")
+    pickle_file = gzip.open(output_file_name, "wb")
     pickle.dump(output_dict, pickle_file, protocol=2)
     pickle_file.flush()
     pickle_file.close()

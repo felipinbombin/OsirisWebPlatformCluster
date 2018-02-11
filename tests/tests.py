@@ -1,8 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from runModel import run_model
 
+from collections import defaultdict
+
+import numpy as np
+import datetime
 import unittest
 import pickle
 import os
+import gzip
 
 test_input_path = "tests/inputs/{0}"
 test_output_path = "tests/outputs/{0}"
@@ -21,7 +29,7 @@ class CommonTest:
         run_model(self.model_id, self.input_file_path, self.output_file_path)
 
         # check file
-        with open(self.output_file_path, mode='rb') as data_file:
+        with gzip.open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user or previous model
             model_input = input_dict["input"]
@@ -37,16 +45,13 @@ class CommonTest:
             # os.remove(self.output_file_path)
 
     def print_dictionary(self, val, spaces=0):
-        from collections import defaultdict
-        import numpy as np
-        import datetime
         if isinstance(val, defaultdict) or isinstance(val, dict):
             for a in val:
                 print("{0}{1}:".format(' ' * spaces, a))
-                self.rec(val[a], spaces + 4)
+                self.print_dictionary(val[a], spaces + 4)
         elif isinstance(val, np.ndarray) or isinstance(val, list) or isinstance(val, tuple):
             for b in val:
-                self.rec(b, spaces + 4)
+                self.print_dictionary(b, spaces + 4)
         elif not (isinstance(val, int) or
                   isinstance(val, float) or
                   isinstance(val, str) or
@@ -57,12 +62,13 @@ class CommonTest:
                   isinstance(val, np.int32)):
             print("{0}{1}:".format(' ' * spaces, type(val)))
 
+
 class TestSpeedModel(unittest.TestCase, CommonTest):
     """  run speed model """
 
     def setUp(self):
         self.model_id = 'S'
-        self.input_file_path = test_input_path.format("speed.model_input")
+        self.input_file_path = test_input_path.format("speed.model_input.gz")
         self.output_file_path = test_output_path.format("speed.model_output")
 
     def test_run(self):
@@ -79,7 +85,7 @@ class TestForceModel(unittest.TestCase, CommonTest):
 
     def setUp(self):
         self.model_id = 'F'
-        self.input_file_path = test_input_path.format("force.model_input")
+        self.input_file_path = test_input_path.format("force.model_input.gz")
         self.output_file_path = test_output_path.format("force.model_output")
 
     def test_run(self):
@@ -96,12 +102,12 @@ class TestEnergyModel(unittest.TestCase, CommonTest):
 
     def setUp(self):
         self.model_id = 'E'
-        self.input_file_path = test_input_path.format("energy.model_input")
+        self.input_file_path = test_input_path.format("energy.model_input.gz")
         self.output_file_path = test_output_path.format("energy.model_output")
 
     def test_run(self):
         """ validate output dict """
-        # _, model_output = self.run_model()
+        _, model_output = self.run_model()
 
         # check dict answer here
 
@@ -113,7 +119,7 @@ class TestThermalModel(unittest.TestCase, CommonTest):
 
     def setUp(self):
         self.model_id = 'T'
-        self.input_file_path = test_input_path.format("heat.model_input")
+        self.input_file_path = test_input_path.format("heat.model_input.gz")
         self.output_file_path = test_output_path.format("heat.model_output")
 
     def test_run(self):
@@ -124,13 +130,13 @@ class TestThermalModel(unittest.TestCase, CommonTest):
         # check dict answer here
 
         # check file
-        with open(self.output_file_path, mode='rb') as data_file:
+        with gzip.open(self.output_file_path, mode='rb') as data_file:
             input_dict = pickle.load(data_file)
             # global properties given by user or previous model
-            model_input = input_dict["input"]
+            # model_input = input_dict["input"]
             # output of previous models
             model_output = input_dict["output"]
 
-        #self.print_dictionary(model_input)
-        #self.print_dictionary(model_output)
+        # self.print_dictionary(model_input)
+        # self.print_dictionary(model_output)
         self.assertIn("lines", model_output["TM"].keys())
