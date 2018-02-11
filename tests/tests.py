@@ -16,13 +16,13 @@ test_input_path = "tests/inputs/{0}"
 test_output_path = "tests/outputs/{0}"
 
 
-class CommonTest:
-    """ base to other tests """
+class TestHelper:
+    """ helper to run models """
 
-    def __init__(self):
-        self.model_id = None
-        self.input_file_path = None
-        self.output_file_path = None
+    def __init__(self, model_id, input_file_path, output_file_path):
+        self.model_id = model_id
+        self.input_file_path = input_file_path
+        self.output_file_path = output_file_path
 
     def run_model(self):
         """ run model and return dict """
@@ -38,11 +38,10 @@ class CommonTest:
 
         return model_input, model_output
 
-    def delete_output_file(self):
+    def delete_output_file(self, fake_remove=True):
         """ delete file """
-        if os.path.exists(self.output_file_path):
-            pass
-            # os.remove(self.output_file_path)
+        if os.path.exists(self.output_file_path) and not fake_remove:
+            os.remove(self.output_file_path)
 
     def print_dictionary(self, val, spaces=0):
         if isinstance(val, defaultdict) or isinstance(val, dict):
@@ -63,68 +62,79 @@ class CommonTest:
             print("{0}{1}:".format(' ' * spaces, type(val)))
 
 
-class TestSpeedModel(unittest.TestCase, CommonTest):
+class TestSpeedModel(unittest.TestCase):
     """  run speed model """
 
     def setUp(self):
-        self.model_id = 'S'
-        self.input_file_path = test_input_path.format("speed.model_input.gz")
-        self.output_file_path = test_output_path.format("speed.model_output")
+        model_id = 'S'
+        input_file_path = test_input_path.format("speed.model_input.gz")
+        output_file_path = test_output_path.format("speed.model_output.gz")
+
+        self.helper = TestHelper(model_id, input_file_path, output_file_path)
 
     def test_run(self):
         """ validate output dict """
-        # _, model_output = self.run_model()
+        _, model_output = self.helper.run_model()
 
         # check dict answer here
+        self.helper.delete_output_file()
 
-        self.delete_output_file()
 
-
-class TestForceModel(unittest.TestCase, CommonTest):
+class TestForceModel(unittest.TestCase):
     """  run force model """
 
     def setUp(self):
-        self.model_id = 'F'
-        self.input_file_path = test_input_path.format("force.model_input.gz")
-        self.output_file_path = test_output_path.format("force.model_output")
+        model_id = 'F'
+        input_file_path = test_input_path.format("force.model_input.gz")
+        output_file_path = test_output_path.format("force.model_output.gz")
+
+        self.helper = TestHelper(model_id, input_file_path, output_file_path)
 
     def test_run(self):
         """ validate output dict """
-        # _, model_output = self.run_model()
+        _, model_output = self.helper.run_model()
 
         # check dict answer here
 
-        self.delete_output_file()
+        self.helper.delete_output_file()
 
 
-class TestEnergyModel(unittest.TestCase, CommonTest):
+class TestEnergyModel(unittest.TestCase):
     """  run energy model """
 
     def setUp(self):
-        self.model_id = 'E'
-        self.input_file_path = test_input_path.format("energy.model_input.gz")
-        self.output_file_path = test_output_path.format("energy.model_output")
+        model_id = 'E'
+        input_file_path = test_input_path.format("energy.model_input.gz")
+        output_file_path = test_output_path.format("energy.model_output.gz")
+
+        self.helper = TestHelper(model_id, input_file_path, output_file_path)
 
     def test_run(self):
         """ validate output dict """
-        _, model_output = self.run_model()
+        _, model_output = self.helper.run_model()
 
         # check dict answer here
 
-        self.delete_output_file()
+        self.helper.delete_output_file()
 
 
-class TestThermalModel(unittest.TestCase, CommonTest):
+class TestThermalModel(unittest.TestCase):
     """  run thermal model """
 
     def setUp(self):
-        self.model_id = 'T'
-        self.input_file_path = test_input_path.format("heat.model_input.gz")
-        self.output_file_path = test_output_path.format("heat.model_output")
+        model_id = 'T'
+        input_file_path = test_input_path.format("heat.model_input.gz")
+        self.output_file_path = test_output_path.format("heat.model_output.gz")
+
+        self.helper = TestHelper(model_id, input_file_path, self.output_file_path)
 
     def test_run(self):
         """ validate output dict """
-        _, model_output = self.run_model()
+        _, model_output = self.helper.run_model()
+
+        # check dict answer here
+
+        self.helper.delete_output_file()
 
     def test_check_output(self):
         # check dict answer here
