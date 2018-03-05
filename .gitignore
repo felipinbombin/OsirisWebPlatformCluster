@@ -5,6 +5,7 @@ models/*
 logs/*
 tmp/*
 env/
+venv/*
 tests/outputs/*
 
 .idea/*
