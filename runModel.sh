@@ -8,7 +8,7 @@
 ##SBATCH --mail-user=usuario@gmail.com
 ##SBATCH --mail-type=ALL
 
-module load python/3.5.2
+module load python/3.6.0
 
 #
 # REMOTE PARAMETERS
