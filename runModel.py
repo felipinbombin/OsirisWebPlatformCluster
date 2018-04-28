@@ -7,6 +7,7 @@ from models.FM import FM
 from models.EM_main import EM_main
 from models.TM import TM
 from models.test import Test
+from models.ECM import energy_center_model
 
 import sys
 import pickle
@@ -29,6 +30,8 @@ def run_model(model_id, model_input_file_path, output_file_name):
         model_output["FM"] = FM(model_input, model_output)
     elif model_id == "E":
         model_output["EM"] = EM_main(model_input, model_output)
+    elif model_id == "ECM":
+        model_output["ECM"] = energy_center_model(model_input, model_output)
     elif model_id == "T":
         model_output["TM"] = TM(model_input, model_output)
     elif model_id == "Test":
