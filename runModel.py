@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import os
-import sys
-
-sys.path.append(os.path.join(os.getcwd(), 'models'))
-
 # model modules
 from models.SMinit import SMinit
 from models.FM import FM
@@ -14,6 +9,7 @@ from models.TM import TM
 from models.test import Test
 from models.ECM import energy_center_model
 
+import sys
 import pickle
 import gzip
 
