@@ -8,7 +8,12 @@
 ##SBATCH --mail-user=usuario@gmail.com
 ##SBATCH --mail-type=ALL
 
-module load python/3.6.0
+# before to run this script you have to create a virtual environment with next steps:
+# - load python 3.6: module load python/3.6_inteL_2018.1.023
+# - check python version: python --version
+# - create virtual environment: virtualenv env
+# - activate virtual environment: source env/bin/activate
+# - install dependencies: pip install -r requirements.txt
 
 #
 # REMOTE PARAMETERS
