@@ -30,7 +30,7 @@ def run_model(model_id, model_input_file_path, output_file_name):
         model_output["FM"] = FM(model_input, model_output)
     elif model_id == "E":
         model_output["EM"] = EM_main(model_input, model_output)
-    elif model_id == "ECM":
+    elif model_id == "EC":
         model_output["ECM"] = energy_center_model(model_input, model_output)
     elif model_id == "T":
         model_output["TM"] = TM(model_input, model_output)
