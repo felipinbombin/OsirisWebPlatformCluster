@@ -118,6 +118,25 @@ class TestEnergyModel(unittest.TestCase):
         self.helper.delete_output_file()
 
 
+class TestEnergyCenterModel(unittest.TestCase):
+    """  run energy center model """
+
+    def setUp(self):
+        model_id = 'EC'
+        input_file_path = test_input_path.format("energycenter.model_input.gz")
+        output_file_path = test_output_path.format("energycenter.model_output.gz")
+
+        self.helper = TestHelper(model_id, input_file_path, output_file_path)
+
+    def test_run(self):
+        """ validate output dict """
+        _, model_output = self.helper.run_model()
+
+        # check dict answer here
+
+        self.helper.delete_output_file()
+
+
 class TestThermalModel(unittest.TestCase):
     """  run thermal model """
 
