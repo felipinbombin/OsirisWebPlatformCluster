@@ -7,6 +7,7 @@
 #SBATCH --error=osiris/logs/archivo_%j.err
 ##SBATCH --mail-user=usuario@gmail.com
 ##SBATCH --mail-type=ALL
+#SBATCH --mem-per-cpu=4800 #Máxima RAM por CPU
 
 module load python/3.6_inteL_2018.1.023
 
