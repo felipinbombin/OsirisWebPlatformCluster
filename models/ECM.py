@@ -27,5 +27,4 @@ def energy_center_model(model_input, model_output):
     Cochrane.simular(1)
 
     # Diccionario de resultados de las simulaciones
-    model_output['ECM'] = Cochrane.saveresults()
-    return model_output
+    return Cochrane.saveresults()
